@@ -2,7 +2,7 @@ import template from './HomeTemplate.html';
 
 import PlayerCore from './../core/PlayerCore';
 import PlayerGUI from './../gui/PlayerGUI';
-import EventDispatcher from './../events/EventDispatcher';
+import EventDispatcher from './../dispatcher/EventDispatcher';
 
 class HomeView extends Backbone.View {
 

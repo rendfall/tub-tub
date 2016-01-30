@@ -21,7 +21,7 @@ class PlayButton extends AbstractElement {
     setupListeners() {
         let actionHandlers = {
             click: (evt) => {
-                this.gui.trigger(EVENTS.GUI.PLAYBUTTON.CLICK, { evt });
+                this.gui.trigger(EVENTS.GUI.CORE.PLAYBUTTON.CLICK, { evt });
             }
         };
 

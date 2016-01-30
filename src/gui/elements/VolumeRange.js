@@ -22,11 +22,11 @@ class VolumeRange extends AbstractElement {
     setupListeners() {
         let actionHandlers = {
             click: (evt) => {
-                this.gui.trigger(EVENTS.GUI.VOLUMERANGE.CLICK, { evt });
+                this.gui.trigger(EVENTS.GUI.CORE.VOLUMERANGE.CLICK, { evt });
             },
 
             input: (evt) => {
-                this.gui.trigger(EVENTS.GUI.VOLUMERANGE.DRAG, {
+                this.gui.trigger(EVENTS.GUI.CORE.VOLUMERANGE.DRAG, {
                     evt,
                     value: this.$element.val() 
                 });

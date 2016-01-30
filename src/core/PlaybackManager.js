@@ -20,7 +20,8 @@ class PlaybackManager {
             videoId: id,
             events: { 
                 onReady: (evt) => {
-                    this.play
+                    this.play;
+                    this.core.startCoreLoop();
                 }
             }
         });
@@ -30,7 +31,7 @@ class PlaybackManager {
 
     load(url) {
         let id = Utils.getIdFromUrl(url);
-        
+
         if (this.isInitialized) {
             this.player.loadVideoById(id);
         } else {
@@ -59,10 +60,9 @@ class PlaybackManager {
     }
 
     isState(name) {
-        let state = this.player.getPlayerState();
+        let state = this.getState();
 
         switch (name) {
-            // unstarted
             case 'unstarted':
                 return (state === -1);
 
@@ -82,12 +82,20 @@ class PlaybackManager {
                 return (state === 5);
 
             default:
-                return false;
+                return;
         }
     }
 
     getState() {
         return this.player.getPlayerState();
+    }
+
+    getCurrentTime() {
+        return this.player.getCurrentTime();
+    }
+
+    getDuration() {
+        return this.player.getDuration();
     }
 
     getVideoUrl() {

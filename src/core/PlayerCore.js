@@ -6,14 +6,39 @@ class PlayerCore {
     playback = null;
 
     constructor(options) {
+        this.setupListeners();
+        this.setupPlayback();
+    }
+
+    setupPlayback() {
         this.playback = new PlaybackManager({ context: this });
 
-        this.setupListeners();
+        _.bindAll(this, 'broadcastProgress');
+    }
+
+    startCoreLoop() {
+        let fn = this.broadcastProgress;
+
+        (function reqFrame() {
+            fn();
+            window.requestAnimationFrame(reqFrame);
+        }).call();
+    }
+
+    broadcastProgress() {
+        let isPlaying = this.playback.isState('playing');
+
+        if (!isPlaying) { 
+            return;
+        }
+
+        let current = this.playback.getCurrentTime();
+        let total = this.playback.getDuration();
+
+        this.trigger(EVENTS.CORE.GUI.PROGRESSBAR.CHANGE, { current, total });
     }
 
     onClickLoadButtonHandler() {
-        let isInitialized = this.playback.isInitialized;
-
         // TODO: Change way to get URL.
         let url = $('#gui-load-input').val();
 
@@ -33,22 +58,26 @@ class PlayerCore {
     }
 
     onChangeProgressBarHandler(options) {
-        this.playback.seekTo(options.value);
+        let total = this.playback.getDuration();
+        let valueInSeconds = Math.floor(options.value * total);
+
+        console.log(options, valueInSeconds);
+        this.playback.seekTo(valueInSeconds);
     }
 
     setupListeners() {
         // PlayButton
-        this.on(EVENTS.CORE.PLAYBUTTON.CLICK, this.onClickPlayButtonHandler, this);
+        this.on(EVENTS.GUI.CORE.PLAYBUTTON.CLICK, this.onClickPlayButtonHandler, this);
 
         // VolumeRange
-        this.on(EVENTS.CORE.VOLUMERANGE.CLICK, Utils.dummyEvent, this);
-        this.on(EVENTS.CORE.VOLUMERANGE.DRAG, this.onChangeVolumeRangeHandler, this);
+        this.on(EVENTS.GUI.CORE.VOLUMERANGE.CLICK, Utils.dummyEvent, this);
+        this.on(EVENTS.GUI.CORE.VOLUMERANGE.DRAG, this.onChangeVolumeRangeHandler, this);
 
         // LoadButton
-        this.on(EVENTS.CORE.LOADBUTTON.CLICK, this.onClickLoadButtonHandler, this);
+        this.on(EVENTS.GUI.CORE.LOADBUTTON.CLICK, this.onClickLoadButtonHandler, this);
 
         // ProgressBar
-        this.on(EVENTS.CORE.PROGRESSBAR.CLICK, this.onChangeProgressBarHandler, this);
+        this.on(EVENTS.GUI.CORE.PROGRESSBAR.CHANGE, this.onChangeProgressBarHandler, this);
     }
 }
 

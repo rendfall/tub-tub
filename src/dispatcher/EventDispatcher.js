@@ -8,24 +8,31 @@ class EventDispatcher {
         this.core = options.core;
         this.gui = options.gui;
 
-        this.setupListeners();
+        this.setupGUIListeners();
+        this.setupCoreListeners();
     }
 
-    setupListeners() {
-        this.gui.on(EVENTS.GUI.PLAYBUTTON.CLICK, (options) => {
-            this.core.trigger(EVENTS.CORE.PLAYBUTTON.CLICK, options);
+    setupGUIListeners() {
+        this.gui.on(EVENTS.GUI.CORE.PLAYBUTTON.CLICK, (options) => {
+            this.core.trigger(EVENTS.GUI.CORE.PLAYBUTTON.CLICK, options);
         });
 
-        this.gui.on(EVENTS.GUI.VOLUMERANGE.DRAG, (options) => {
-            this.core.trigger(EVENTS.CORE.VOLUMERANGE.DRAG, options);
+        this.gui.on(EVENTS.GUI.CORE.VOLUMERANGE.DRAG, (options) => {
+            this.core.trigger(EVENTS.GUI.CORE.VOLUMERANGE.DRAG, options);
         });
 
-        this.gui.on(EVENTS.GUI.LOADBUTTON.CLICK, (options) => {
-            this.core.trigger(EVENTS.CORE.LOADBUTTON.CLICK, options);
+        this.gui.on(EVENTS.GUI.CORE.LOADBUTTON.CLICK, (options) => {
+            this.core.trigger(EVENTS.GUI.CORE.LOADBUTTON.CLICK, options);
         });
 
-        this.gui.on(EVENTS.GUI.PROGRESSBAR.CHANGE, (options) => {
-            this.core.trigger(EVENTS.CORE.PROGRESSBAR.CLICK, options);
+        this.gui.on(EVENTS.GUI.CORE.PROGRESSBAR.CHANGE, (options) => {
+            this.core.trigger(EVENTS.GUI.CORE.PROGRESSBAR.CHANGE, options);
+        });
+    }
+
+    setupCoreListeners() {
+        this.core.on(EVENTS.CORE.GUI.PROGRESSBAR.CHANGE, (options) => {
+            this.gui.trigger(EVENTS.CORE.GUI.PROGRESSBAR.CHANGE, options);
         });
     }
 }

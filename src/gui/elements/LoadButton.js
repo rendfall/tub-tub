@@ -21,7 +21,7 @@ class LoadButton extends AbstractElement {
     setupListeners() {
         let actionHandlers = {
             click: (evt) => {
-                this.gui.trigger(EVENTS.GUI.LOADBUTTON.CLICK, { evt });
+                this.gui.trigger(EVENTS.GUI.CORE.LOADBUTTON.CLICK, { evt });
             }
         };
 

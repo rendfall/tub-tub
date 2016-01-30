@@ -25,7 +25,7 @@ class PlayerGUI {
         loadButton.render();
         playButton.render();
         volumeRange.render();
-        // progressBar.render();
+        progressBar.render();
     }
 }
 

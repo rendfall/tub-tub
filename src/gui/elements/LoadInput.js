@@ -21,7 +21,7 @@ class LoadInput extends AbstractElement {
     setupListeners() {
         let actionHandlers = {
             click: (evt) => {
-                this.gui.trigger(EVENTS.GUI.LOADINPUT.KEYPRESSED, { evt });
+                this.gui.trigger(EVENTS.GUI.CORE.LOADINPUT.KEYPRESSED, { evt });
             }
         };
 

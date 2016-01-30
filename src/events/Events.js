@@ -1,55 +1,64 @@
-// Struktura:
-//  Źródło (np. GUI)
-//      Element (np. PlayButton)
-//          Akcja (np. click)
+/**
+ * Order structure:
+ *  - source
+ *  - destination
+ *  - element or context
+ *  - action
+ * 
+ * For example event triggered from GUI to Core 
+ * when volume has changed should looks like this:
+ * EVENT.GUI.CORE.VOLUMERANGE.CHANGE as GUI:CORE:VolumeRange:change
+ */
 
-const EVENTS = {
+const EVENTS = {}
 
-    GUI: {
-        PLAYBUTTON: {
-            CLICK: 'GUI:PlayButton:click'
-        },
+EVENTS.CORE = {};
+EVENTS.GUI = {};
 
-        VOLUMERANGE: {
-            CHANGE: 'GUI:VolumeRange:change',
-            DRAG: 'GUI:VolumeRange:drag',
-            CLICK: 'GUI:VolumeRange:click'
-        },
-
-        LOADBUTTON: {
-            CLICK: 'GUI:LoadButton:click'
-        },
-
-        PROGRESSBAR: {
-            CHANGE: 'GUI:ProgressBar:change',
-            DRAG: 'GUI:ProgressBar:drag'
-        },
-
-        LOADINPUT: {
-            KEYPRESSED: 'GUI:LoadInput:keypressed'
-        }
+EVENTS.CORE.GUI = {
+    PLAYBUTTON: {
+        CLICK: 'CORE:GUI:PlayButton:click'
     },
 
-    CORE: {
-        PLAYBUTTON: {
-            CLICK: 'CORE:playbutton:click'
-        },
+    VOLUMERANGE: {
+        CHANGE: 'CORE:GUI:VolumeRange:change',
+        DRAG: 'CORE:GUI:VolumeRange:drag',
+        CLICK: 'CORE:GUI:VolumeRange:click'
+    },
 
-        VOLUMERANGE: {
-            CHANGE: 'CORE:VolumeRange:change',
-            DRAG: 'CORE:VolumeRange:drag',
-            CLICK: 'CORE:VolumeRange:click'
-        },
+    LOADBUTTON: {
+        CLICK: 'CORE:GUI:LoadButton:click'
+    },
 
-        LOADBUTTON: {
-            CLICK: 'CORE:LoadButton:click'
-        },
+    PROGRESSBAR: {
+        CHANGE: 'CORE:GUI:ProgressBar:change',
+        DRAG: 'CORE:GUI:ProgressBar:drag'
+    },
 
-        PROGRESSBAR: {
-            CHANGE: 'CORE:ProgressBar:change',
-            DRAG: 'CORE:ProgressBar:drag'
-        }
+    LOADINPUT: {
+        KEYPRESSED: 'CORE:GUI:LoadInput:keypressed'
     }
-}
+};
+
+EVENTS.GUI.CORE = {
+    PLAYBUTTON: {
+        CLICK: 'GUI:CORE:playbutton:click'
+    },
+
+    VOLUMERANGE: {
+        CHANGE: 'GUI:CORE:VolumeRange:change',
+        DRAG: 'GUI:CORE:VolumeRange:drag',
+        CLICK: 'GUI:CORE:VolumeRange:click'
+    },
+
+    LOADBUTTON: {
+        CLICK: 'GUI:CORE:LoadButton:click'
+    },
+
+    PROGRESSBAR: {
+        CHANGE: 'GUI:CORE:ProgressBar:change',
+        DRAG: 'GUI:CORE:ProgressBar:drag'
+    }
+};
 
 export default EVENTS;

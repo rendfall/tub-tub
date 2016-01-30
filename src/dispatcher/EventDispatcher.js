@@ -1,7 +1,4 @@
-import EVENTS from './Events';
-//import PM from './../core/PlayerManager';
-
-// TODO: Pobierz informacje o stanie playera (co jest teraz odtwarzane)
+import EVENTS from './../events/Events';
 
 class EventDispatcher {
     core = null;

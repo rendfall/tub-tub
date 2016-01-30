@@ -61,7 +61,6 @@ class PlayerCore {
         let total = this.playback.getDuration();
         let valueInSeconds = Math.floor(options.value * total);
 
-        console.log(options, valueInSeconds);
         this.playback.seekTo(valueInSeconds);
     }
 

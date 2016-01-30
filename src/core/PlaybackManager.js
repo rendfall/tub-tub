@@ -2,9 +2,14 @@ import EVENTS from './../events/Events';
 import Utils from './../helpers/Utils';
 
 class PlaybackManager {
+    core = null;
     player = null;
 
-    initialize(url, options = {}) {
+    constructor(options) {
+        this.core = options.context;
+    }
+
+    setup(url, options = {}) {
         let id = Utils.getIdFromUrl(url);
 
         if (_.isEmpty(id)) return;
@@ -22,56 +27,42 @@ class PlaybackManager {
 
         this.player = new YT.Player('player', options);
     }
-}
 
-let PM = new PlaybackManager();
-
-export default {
-
-    get isInitialized() {
-        return Boolean(PM.player);
-    },
-
-    initialize(url, options) {
-        PM.initialize(url, options);
-    },
-
-    load() {
-        PM.player.loadVideoById(url);
-    },
+    load(url) {
+        let id = Utils.getIdFromUrl(url);
+        
+        if (this.isInitialized) {
+            this.player.loadVideoById(id);
+        } else {
+            this.setup(url);
+        }
+    }
 
     play() {
-        PM.player.playVideo();
-    },
+        this.player.playVideo();
+    }
 
     pause() {
-        PM.player.pauseVideo();
-    },
+        this.player.pauseVideo();
+    }
 
     stop() {
-        PM.player.stopVideo();
-    },
+        this.player.stopVideo();
+    }
 
     setVolume(value) {
-        PM.player.setVolume(value);
-    },
+        this.player.setVolume(value);
+    }
 
     seekTo(value) {
-        PM.player.seekTo(value, false);
-    },
+        this.player.seekTo(value, false);
+    }
 
-    /**
-     * -1 – unstarted (nie uruchomiono)
-     *  0 – ended (zakończono)
-     *  1 – playing (odtwarzanie)
-     *  2 – paused (wstrzymano)
-     *  3 – buffering (buforowanie)
-     *  5 – video cued (film został wskazany)
-     */ 
     isState(name) {
-        let state = PM.player.getPlayerState();
+        let state = this.player.getPlayerState();
 
         switch (name) {
+            // unstarted
             case 'unstarted':
                 return (state === -1);
 
@@ -93,13 +84,19 @@ export default {
             default:
                 return false;
         }
-    },
+    }
 
     getState() {
-        return PM.player.getPlayerState();
-    },
+        return this.player.getPlayerState();
+    }
 
     getVideoUrl() {
-        return PM.player.getVideoUrl();
+        return this.player.getVideoUrl();
+    }
+
+    get isInitialized() {
+        return Boolean(this.player);
     }
 };
+
+export default PlaybackManager;

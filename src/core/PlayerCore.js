@@ -1,55 +1,53 @@
 import EVENTS from './../events/Events';
 import Utils from './../helpers/Utils';
-import PM from './PlaybackManager';
+import PlaybackManager from './PlaybackManager';
 
 class PlayerCore {
-    player = null;
+    playback = null;
 
     constructor(options) {
+        this.playback = new PlaybackManager({ context: this });
+
         this.setupListeners();
     }
 
-    get isInitialized() {
-        return Boolean(this.player);
-    }
-
     onClickLoadButtonHandler() {
-        let isInitialized = PM.isInitialized;
+        let isInitialized = this.playback.isInitialized;
 
         // TODO: Change way to get URL.
         let url = $('#gui-load-input').val();
 
-        if (isInitialized) {
-            console.log('is initialized!');
-        } else {
-            PM.initialize(url);
-        }
+        this.playback.load(url);
     }
 
     onClickPlayButtonHandler(options) {
-        if (PM.isState('playing')) {
-            PM.pause();
+        if (this.playback.isState('playing')) {
+            this.playback.pause();
         } else {
-            PM.play();
+            this.playback.play();
         }
     }
 
     onChangeVolumeRangeHandler(options) {
-        PM.setVolume(options.value);
+        this.playback.setVolume(options.value);
     }
 
     onChangeProgressBarHandler(options) {
-        PM.seekTo(options.value);
+        this.playback.seekTo(options.value);
     }
 
     setupListeners() {
+        // PlayButton
         this.on(EVENTS.CORE.PLAYBUTTON.CLICK, this.onClickPlayButtonHandler, this);
 
+        // VolumeRange
         this.on(EVENTS.CORE.VOLUMERANGE.CLICK, Utils.dummyEvent, this);
         this.on(EVENTS.CORE.VOLUMERANGE.DRAG, this.onChangeVolumeRangeHandler, this);
 
+        // LoadButton
         this.on(EVENTS.CORE.LOADBUTTON.CLICK, this.onClickLoadButtonHandler, this);
 
+        // ProgressBar
         this.on(EVENTS.CORE.PROGRESSBAR.CLICK, this.onChangeProgressBarHandler, this);
     }
 }

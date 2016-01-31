@@ -61,7 +61,7 @@ class PlayerCore {
         let total = this.playback.getDuration();
         let valueInSeconds = Math.floor(options.value * total);
 
-        this.playback.seekTo(valueInSeconds);
+        this.playback.seekTo(valueInSeconds, options.allowSeekAhead);
     }
 
     setupListeners() {

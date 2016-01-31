@@ -4,6 +4,7 @@ import Utils from './../helpers/Utils';
 class PlaybackManager {
     core = null;
     player = null;
+    videoInfo = null;
 
     constructor(options) {
         this.core = options.context;
@@ -15,7 +16,7 @@ class PlaybackManager {
         if (_.isEmpty(id)) return;
 
         _.defaults(options, {
-            width: 200,
+            width: 300,
             height: 104,
             videoId: id,
             events: { 
@@ -55,8 +56,8 @@ class PlaybackManager {
         this.player.setVolume(value);
     }
 
-    seekTo(value) {
-        this.player.seekTo(value, false);
+    seekTo(value, allowSeekAhead = false) {
+        this.player.seekTo(value, allowSeekAhead);
     }
 
     isState(name) {
@@ -96,6 +97,10 @@ class PlaybackManager {
 
     getDuration() {
         return this.player.getDuration();
+    }
+
+    getVideoData() {
+        return this.player.getVideoData();
     }
 
     getVideoUrl() {

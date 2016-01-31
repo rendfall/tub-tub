@@ -2,6 +2,7 @@ import AbstractElement from './AbstractElement';
 import EVENTS from './../../events/Events';
 
 class ProgressBar extends AbstractElement {
+    isDragging = false;
 
     constructor(options) {
         super(options);
@@ -24,6 +25,17 @@ class ProgressBar extends AbstractElement {
     setupListeners() {
         let actionHandlers = {
             change: (evt) => {
+                this.isDragging = false;
+
+                this.gui.trigger(EVENTS.GUI.CORE.PROGRESSBAR.CHANGE, {
+                    evt,
+                    value: this.$element.val(),
+                    allowSeekAhead: true
+                });
+            },
+            input: (evt) => {
+                this.isDragging = true;
+
                 this.gui.trigger(EVENTS.GUI.CORE.PROGRESSBAR.CHANGE, {
                     evt,
                     value: this.$element.val()
@@ -32,8 +44,11 @@ class ProgressBar extends AbstractElement {
         };
 
         this.gui.on(EVENTS.CORE.GUI.PROGRESSBAR.CHANGE, (options) => {
-            let percent = (options.current / options.total);
+            if (this.isDragging) {
+                return;
+            }
 
+            let percent = (options.current / options.total);
             this.$element.val(percent);
         });
 
